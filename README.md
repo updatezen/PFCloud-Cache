@@ -3,13 +3,20 @@ PFCloud-Cache
 
 iOS library for caching cloud function calls in Parse.
 
-This category adds an additional **cachePolicy** parameter to Parse's existing cloud function methods. The **cachePolicy** parameter is of type **PFCachePolicy** and exactly replicates the [existing caching behavior] used with the **PFQuery** object.  It creates a record in the cache for every unique combination of function name + parameters.
+This category adds an additional **cachePolicy** parameter to Parse's existing background cloud function call methods. The **cachePolicy** parameter is of type **PFCachePolicy** and exactly replicates the [existing caching behavior] used with the **PFQuery** object.  It creates a record in the cache for every unique combination of function name + parameters.
 
 ```
 + (void)callFunctionInBackground:(NSString*)function
                   withParameters:(NSDictionary*)parameters
                      cachePolicy:(PFCachePolicy)cachePolicy
                            block:(PFIdResultBlock)block;
+```
+```
++ (void)callFunctionInBackground:(NSString*)function
+                  withParameters:(NSDictionary*)parameters
+                     cachePolicy:(PFCachePolicy)cachePolicy
+                          target:(id)target
+                        selector:(SEL)selector;
 ```
 
 ##Sample Usage
@@ -31,6 +38,10 @@ Caching is performed on disk and persists between app restarts until it expires.
 ##How it Works
 
 This library concatenates the function name with a JSON-serialized string of the parameters dictionary. It then takes an MD5 of this string using the [RSCategories] library and uses this as the unique key in the cache. Actual caching is performed using the [TMCache] library.
+
+##Installation
+
+Easiest installation is using CocoaPods to resolve all dependencies. Otherwise you must manually copy the .h and .m files from this repo as well as from [RSCategories] and [TMCache].
 
 [existing caching behavior]: https://parse.com/docs/ios_guide#queries-caching/iOS
 [RSCategories]: https://github.com/reejosamuel/RSCategories
