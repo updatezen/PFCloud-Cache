@@ -16,29 +16,24 @@
 
 #pragma mark - Public
 
-/*
- Calls the given cloud function with the parameters provided asynchronously and runs the callback when it is done.
- @param function The function name to call.
- @param parameters The parameters to send to the function.
- @param cachePolicy  The cache policy to use for the function.
- @param block The block to execute. The block should have the following argument signature:(id result, NSError *error).
- */
 + (void)callFunctionInBackground:(NSString *)function withParameters:(NSDictionary *)parameters cachePolicy:(PFCachePolicy)cachePolicy block:(PFIdResultBlock)block
 {
 	if (!block) {
 		[NSException raise:@"No completion block set" format:nil];
 		return;
 	}
-
+	
 	switch (cachePolicy)
 	{
-		//The call does not load from the cache or save results to the cache.
+			//The call does not load from the cache or save results to the cache.
 		case kPFCachePolicyIgnoreCache:
 		{
-			[self callFunctionInBackground:function withParameters:parameters block:block];
+			[self callFunctionInBackground:function withParameters:parameters block:^(id object, NSError *error) {
+				NSLog(@"What?");
+			}];
 			break;
 		}
-		//The call only loads from the cache, ignoring the network. If there are no cached results, that causes a PFError.
+			//The call only loads from the cache, ignoring the network. If there are no cached results, that causes a PFError.
 		case kPFCachePolicyCacheOnly:
 		{
 			id cachedResponse = [self fetchFromCache:function params:parameters];
@@ -49,7 +44,7 @@
 			}
 			break;
 		}
-		//The call first tries to load from the cache, but if that fails, it loads results from the network. If neither cache nor network succeed, there is a PFError.
+			//The call first tries to load from the cache, but if that fails, it loads results from the network. If neither cache nor network succeed, there is a PFError.
 		case kPFCachePolicyCacheElseNetwork:
 		{
 			id cachedResponse = [self fetchFromCache:function params:parameters];
@@ -60,13 +55,13 @@
 			}
 			break;
 		}
-		//The call does not load from the cache, but it will save results to the cache.
+			//The call does not load from the cache, but it will save results to the cache.
 		case kPFCachePolicyNetworkOnly:
 		{
 			[self callFunctionInBackgroundAndCache:function withParameters:parameters block:block];
 			break;
 		}
-		//The call first tries to load from the network, but if that fails, it loads results from the cache. If neither network nor cache succeed, there is a PFError.
+			//The call first tries to load from the network, but if that fails, it loads results from the cache. If neither network nor cache succeed, there is a PFError.
 		case kPFCachePolicyNetworkElseCache:
 		{
 			[self callFunctionInBackgroundAndCache:function withParameters:parameters block:^(id object, NSError* error) {
@@ -83,7 +78,7 @@
 			}];
 			break;
 		}
-		//The call first loads from the cache, then loads from the network. In this case, the callback will actually be called twice - first with the cached results, then with the network results.
+			//The call first loads from the cache, then loads from the network. In this case, the callback will actually be called twice - first with the cached results, then with the network results.
 		case kPFCachePolicyCacheThenNetwork:
 		{
 			id cachedResponse = [self fetchFromCache:function params:parameters];
@@ -94,6 +89,18 @@
 			break;
 		}
 	}
+}
+
++ (void)callFunctionInBackground:(NSString*)function withParameters:(NSDictionary*)parameters cachePolicy:(PFCachePolicy)cachePolicy target:(id)target selector:(SEL)selector
+{
+	[self callFunctionInBackground:function withParameters:parameters cachePolicy:cachePolicy block:^(id object, NSError* error) {
+		NSInvocation* invocation = [NSInvocation invocationWithMethodSignature:[target methodSignatureForSelector:selector]];
+		[invocation setTarget:target];
+		[invocation setSelector:selector];
+		[invocation setArgument:&object atIndex:2];
+		[invocation setArgument:&error atIndex:3];
+		[invocation invoke];
+	}];
 }
 
 + (void)clearCachedResult:(NSString*)function withParameters:(NSDictionary*)parameters
@@ -121,14 +128,14 @@
 
 + (void)callFunctionInBackgroundAndCache:(NSString*)function withParameters:(NSDictionary*)parameters block:(PFIdResultBlock)block
 {
-   [self callFunctionInBackground:function withParameters:parameters block:^(NSDictionary* object, NSError* error) {
-	   if (error) {
-		   block(nil, error);
-	   } else {
-		   [self saveToCache:object function:function params:parameters];
-		   block(object, nil);
-	   }
-   }];
+	[self callFunctionInBackground:function withParameters:parameters block:^(NSDictionary* object, NSError* error) {
+		if (error) {
+			block(nil, error);
+		} else {
+			[self saveToCache:object function:function params:parameters];
+			block(object, nil);
+		}
+	}];
 }
 
 + (NSString*)cacheKey:(NSString*)function params:(NSDictionary*)params
