@@ -26,7 +26,7 @@ This category adds an additional **cachePolicy** parameter to Parse's existing c
 
 ##Cache Management
 
-Caching is performed on disk and persists between app restarts. The cache remains on disk until it expires. By default the cache never expires. To change the cache age call the ```setMaxCacheAge``` method. The cache can also be explicity cleared for a particular cloud function call using the ```clearCachedResult:``` method, or for all calls using the ```clearAllCachedResults``` method. Thanks to those libraries for their great work!
+Caching is performed on disk and persists between app restarts until it expires. By default the cache never expires. To change the cache age call the ```setMaxCacheAge``` method. The cache can also be explicity cleared for a particular cloud function call using the ```clearCachedResult:``` method, or for all calls using the ```clearAllCachedResults``` method. Thanks to those libraries for their great work!
 
 ##How it Works
 
