@@ -48,4 +48,4 @@ Easiest installation is using CocoaPods to resolve all dependencies. Otherwise y
 [existing caching behavior]: https://parse.com/docs/ios_guide#queries-caching/iOS
 [RSCategories]: https://github.com/reejosamuel/RSCategories
 [TMCache]:https://github.com/tumblr/TMCache
-[Parse SDK]:https://parse.com/downloads/ios/parse-osx-library/latest
+[Parse SDK]:https://parse.com/downloads/ios/parse-library/latest
