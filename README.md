@@ -45,7 +45,7 @@ Cached objects persist between app restarts until they expire. By default they n
 
 ##How it Works
 
-This library concatenates the function name with a JSON-serialized string of the parameters dictionary. It then takes an MD5 hash of this string using the [RSCategories] library to create a unique key in the cache. Actual caching is performed using Tumblr's [TMCache] library. Thanks to those libraries for their great work!
+The trick is to create a unique key in the cache for every unique combination of function + parameters. This library concatenates the function name with a JSON-serialized string of the parameters dictionary. It then takes an MD5 hash of this string using the [RSCategories] library to create a unique key in the cache. Actual caching is performed using Tumblr's [TMCache] library. Thanks to those libraries for their great work!
 
 ##Installation
 
