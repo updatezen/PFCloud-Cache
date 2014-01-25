@@ -7,7 +7,6 @@
 //
 
 #import "PFCloud+Cache.h"
-#import <Parse/Parse.h>
 #import "TMCache.h"
 #import "NSString+Helpers.h"
 #import "NSDictionary+JSON.h"
@@ -16,7 +15,7 @@
 
 #pragma mark - Public
 
-+ (void)callFunctionInBackground:(NSString *)function withParameters:(NSDictionary *)parameters cachePolicy:(PFCachePolicy)cachePolicy block:(PFIdResultBlock)block
++ (void)callFunctionInBackground:(NSString*)function withParameters:(NSDictionary*)parameters cachePolicy:(PFCachePolicy)cachePolicy block:(PFIdResultBlock)block
 {
 	if (!block) {
 		[NSException raise:@"No completion block set" format:nil];
@@ -25,15 +24,13 @@
 	
 	switch (cachePolicy)
 	{
-			//The call does not load from the cache or save results to the cache.
+		//The call does not load from the cache or save results to the cache.
 		case kPFCachePolicyIgnoreCache:
 		{
-			[self callFunctionInBackground:function withParameters:parameters block:^(id object, NSError *error) {
-				NSLog(@"What?");
-			}];
+			[self callFunctionInBackground:function withParameters:parameters block:block];
 			break;
 		}
-			//The call only loads from the cache, ignoring the network. If there are no cached results, that causes a PFError.
+		//The call only loads from the cache, ignoring the network. If there are no cached results, that causes a PFError.
 		case kPFCachePolicyCacheOnly:
 		{
 			id cachedResponse = [self fetchFromCache:function params:parameters];
@@ -44,7 +41,7 @@
 			}
 			break;
 		}
-			//The call first tries to load from the cache, but if that fails, it loads results from the network. If neither cache nor network succeed, there is a PFError.
+		//The call first tries to load from the cache, but if that fails, it loads results from the network. If neither cache nor network succeed, there is a PFError.
 		case kPFCachePolicyCacheElseNetwork:
 		{
 			id cachedResponse = [self fetchFromCache:function params:parameters];
@@ -55,13 +52,13 @@
 			}
 			break;
 		}
-			//The call does not load from the cache, but it will save results to the cache.
+		//The call does not load from the cache, but it will save results to the cache.
 		case kPFCachePolicyNetworkOnly:
 		{
 			[self callFunctionInBackgroundAndCache:function withParameters:parameters block:block];
 			break;
 		}
-			//The call first tries to load from the network, but if that fails, it loads results from the cache. If neither network nor cache succeed, there is a PFError.
+		//The call first tries to load from the network, but if that fails, it loads results from the cache. If neither network nor cache succeed, there is a PFError.
 		case kPFCachePolicyNetworkElseCache:
 		{
 			[self callFunctionInBackgroundAndCache:function withParameters:parameters block:^(id object, NSError* error) {
@@ -78,7 +75,7 @@
 			}];
 			break;
 		}
-			//The call first loads from the cache, then loads from the network. In this case, the callback will actually be called twice - first with the cached results, then with the network results.
+		//The call first loads from the cache, then loads from the network. In this case, the callback will actually be called twice - first with the cached results, then with the network results.
 		case kPFCachePolicyCacheThenNetwork:
 		{
 			id cachedResponse = [self fetchFromCache:function params:parameters];
