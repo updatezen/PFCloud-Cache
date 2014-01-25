@@ -1,9 +1,7 @@
 PFCloud-Cache
 =============
 
-iOS library for caching cloud function calls in Parse.
-
-This category adds an additional **cachePolicy** parameter to Parse's existing asynchronous (background) cloud function call methods. It exactly replicates the [existing caching behavior] used with the **PFQuery** object. It creates a record in the cache for every unique combination of function name + parameters. For it to work, the contents of the **parameters** dictionary must conform to the **NSCoding** protocol. 
+This category on **PFCloud** adds an additional **cachePolicy** parameter to Parse's existing asynchronous (background) cloud function call methods. It exactly replicates the [existing caching behavior] used with the **PFQuery** object. It creates a record in the cache for every unique combination of function name + parameters. For it to work, the contents of the **parameters** dictionary must conform to the **NSCoding** protocol. 
 
 ```
 + (void)callFunctionInBackground:(NSString*)function
