@@ -45,7 +45,7 @@ Cached objects persist between app restarts until they expire. By default they n
 
 ##How it Works
 
-This library concatenates the function name with a JSON-serialized string of the parameters dictionary. It then takes an MD5 has of this string using the [RSCategories] library to create a unique key in the cache. Actual caching is performed using Tumblr's [TMCache] library. Thanks to those libraries for their great work!
+This library concatenates the function name with a JSON-serialized string of the parameters dictionary. It then takes an MD5 hash of this string using the [RSCategories] library to create a unique key in the cache. Actual caching is performed using Tumblr's [TMCache] library. Thanks to those libraries for their great work!
 
 ##Installation
 
@@ -53,9 +53,9 @@ Easiest installation is using CocoaPods to resolve all dependencies:
 
 ```pod 'PFCloud+Cache', '~> 0.0.1'```
 
-Otherwise you must manually copy the .h and .m files from this repo as well as from [RSCategories] and [TMCache]. Obviously you must also have the [Parse SDK] installed.
+Otherwise you must manually copy the .h and .m files from this repo as well as from [RSCategories] and [TMCache]. Obviously you must also have the [Parse SDK] installed. Enjoy!
 
-[existing caching behavior]: https://parse.com/docs/ios_guide#queries-caching/iOS
-[RSCategories]: https://github.com/reejosamuel/RSCategories
+[existing caching behavior]:https://parse.com/docs/ios_guide#queries-caching/iOS
+[RSCategories]:https://github.com/reejosamuel/RSCategories
 [TMCache]:https://github.com/tumblr/TMCache
 [Parse SDK]:https://parse.com/downloads/ios/parse-library/latest
