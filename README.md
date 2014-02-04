@@ -1,7 +1,7 @@
 PFCloud-Cache
 =============
 
-This category on **PFCloud** adds an additional **cachePolicy** parameter to Parse's existing asynchronous (background) cloud function call methods. It exactly replicates the [existing caching behavior] used with the **PFQuery** object. It creates a record in the cache for every unique combination of function name + parameters. For it to work, the contents of the **parameters** dictionary must conform to the **NSCoding** protocol. 
+This category on **PFCloud** adds an additional **cachePolicy** parameter to Parse's existing asynchronous (background) cloud function call methods. It exactly replicates the [existing caching behavior] used with the **PFQuery** object. It creates a record in the cache for every unique combination of function name + parameters.
 
 ```
 + (void)callFunctionInBackground:(NSString*)function
@@ -31,6 +31,10 @@ This category on **PFCloud** adds an additional **cachePolicy** parameter to Par
 }];
 ```
 
+##NSCoding
+
+Both the contents of the **parameters** dictionary and the **cloud function return value** must conform to the [NSCoding] protocol. Note that PFObject **does not** conform to NSCoding by default. If your cloud function returns one or more **PFObjects**, you must implement this protocol yourself or use my other [Parse+NSCoding] library.
+
 ##Cache Management
 
 Cached objects are persisted to disk in the following folder on the user's device:
@@ -54,6 +58,8 @@ Easiest installation is using CocoaPods to resolve all dependencies:
 Otherwise you must manually copy the .h and .m files from this repo as well as from [RSCategories] and [TMCache]. Obviously you must also have the [Parse SDK] installed. Enjoy!
 
 [existing caching behavior]:https://parse.com/docs/ios_guide#queries-caching/iOS
+[NSCoding]:https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Protocols/NSCoding_Protocol/Reference/Reference.html
+[Parse+NSCoding]:https://github.com/martinrybak/Parse-NSCoding/
 [RSCategories]:https://github.com/reejosamuel/RSCategories
 [TMCache]:https://github.com/tumblr/TMCache
 [Parse SDK]:https://parse.com/downloads/ios/parse-library/latest
