@@ -125,7 +125,7 @@
 
 + (void)callFunctionInBackgroundAndCache:(NSString*)function withParameters:(NSDictionary*)parameters block:(PFIdResultBlock)block
 {
-	[self callFunctionInBackground:function withParameters:parameters block:^(NSDictionary* object, NSError* error) {
+	[self callFunctionInBackground:function withParameters:parameters block:^(id object, NSError* error) {
 		if (error) {
 			block(nil, error);
 		} else {
