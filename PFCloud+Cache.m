@@ -8,7 +8,6 @@
 
 #import "PFCloud+Cache.h"
 #import "TMCache.h"
-#import "NSString+Helpers.h"
 #import "NSData+MD5Digest.h"
 
 @implementation PFCloud (Cache)
