@@ -9,7 +9,7 @@
 #import "PFCloud+Cache.h"
 #import "TMCache.h"
 #import "NSString+Helpers.h"
-#import "NSDictionary+JSON.h"
+#import "NSData+MD5Digest.h"
 
 @implementation PFCloud (Cache)
 
@@ -134,8 +134,9 @@
 
 + (NSString*)cacheKey:(NSString*)function params:(NSDictionary*)params
 {
-	NSString* contents = [function stringByAppendingString:[params JSON]];
-	return [contents MD5];
+	NSDictionary* call = @{ function:params };
+	NSData* data = [NSKeyedArchiver archivedDataWithRootObject:call];
+	return [data MD5HexDigest];
 }
 
 + (void)saveToCache:(id)object function:(NSString*)function params:(NSDictionary*)params
