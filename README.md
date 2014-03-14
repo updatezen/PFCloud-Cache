@@ -47,19 +47,19 @@ Cached objects persist between app restarts until they expire. By default they n
 
 ##How it Works
 
-The trick is to create a unique key in the cache for every unique combination of function + parameters. This library concatenates the function name with a JSON-serialized string of the parameters dictionary. It then takes an MD5 hash of this string using the [RSCategories] library to create a unique key in the cache. Actual caching is performed using Tumblr's [TMCache] library. Thanks to those libraries for their great work!
+The trick is to create a unique key in the cache for every unique combination of function + parameters. This library serializes the function name along with the contents of the parameters dictionary. It then calculates a MD5 hex digest using the [NSData-MD5] library to create a unique string key for the cache. Actual caching is performed using Tumblr's [TMCache] library. Thanks to those libraries for their great work!
 
 ##Installation
 
 Easiest installation is using CocoaPods to resolve all dependencies:
 
-```pod 'PFCloud+Cache', '~> 0.0.1'```
+```pod 'PFCloud+Cache', '~> 0.0.2'```
 
-Otherwise you must manually copy the .h and .m files from this repo as well as from [RSCategories] and [TMCache]. Obviously you must also have the [Parse SDK] installed. Enjoy!
+Otherwise you must manually copy the .h and .m files from this repo as well as from [NSData-MD5] and [TMCache]. Obviously you must also have the [Parse SDK] installed. Enjoy!
 
 [existing caching behavior]:https://parse.com/docs/ios_guide#queries-caching/iOS
 [NSCoding]:https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Protocols/NSCoding_Protocol/Reference/Reference.html
 [Parse+NSCoding]:https://github.com/martinrybak/Parse-NSCoding/
-[RSCategories]:https://github.com/reejosamuel/RSCategories
+[NSData-MD5]:https://github.com/siuying/NSData-MD5
 [TMCache]:https://github.com/tumblr/TMCache
 [Parse SDK]:https://parse.com/downloads/ios/parse-library/latest
