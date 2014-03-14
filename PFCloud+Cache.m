@@ -17,10 +17,7 @@
 
 + (void)callFunctionInBackground:(NSString*)function withParameters:(NSDictionary*)parameters cachePolicy:(PFCachePolicy)cachePolicy block:(PFIdResultBlock)block
 {
-	if (!block) {
-		[NSException raise:@"No completion block set" format:nil];
-		return;
-	}
+	NSParameterAssert(block);
 	
 	switch (cachePolicy)
 	{
