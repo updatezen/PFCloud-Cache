@@ -1,6 +1,9 @@
 PFCloud-Cache
 =============
 
+**NOTE: This repo is no longer maintained. We ended up abandoning Parse because of performance and security issues.**
+
+
 This category on **PFCloud** adds an additional **cachePolicy** parameter to Parse's existing asynchronous (background) cloud function call methods. It exactly replicates the [existing caching behavior] used with the **PFQuery** object. It creates a record in the cache for every unique combination of function name + parameters.
 
 ```
