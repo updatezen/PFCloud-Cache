@@ -7,8 +7,13 @@
 //
 
 #import <Parse/Parse.h>
+#import <Parse/PFConstants.h>
+
+@class BFTask;
 
 @interface PFCloud (Cache)
+
++ (BFTask *)callFunctionInBackground:(NSString *)function withParameters:(NSDictionary *)parameters cachePolicy:(PFCachePolicy)cachePolicy;
 
 /*
  Calls the given cloud function with the parameters provided asynchronously and runs the callback when it is done.

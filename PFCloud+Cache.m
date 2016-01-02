@@ -9,10 +9,25 @@
 #import "PFCloud+Cache.h"
 #import "TMCache.h"
 #import "NSData+MD5Digest.h"
+#import "BFTask.h"
+#import "BFTaskCompletionSource.h"
 
 @implementation PFCloud (Cache)
 
 #pragma mark - Public
+
++ (BFTask *) callFunctionInBackground:(NSString*)function withParameters:(NSDictionary*)parameters cachePolicy:(PFCachePolicy)cachePolicy {
+    NSAssert(cachePolicy != kPFCachePolicyCacheThenNetwork, @"Can not use BFTask with kPFCachePolicyCacheThenNetwork because the callback my be executed more than once. Use a signature that accepts a block instead");
+    BFTaskCompletionSource *tcs = [BFTaskCompletionSource taskCompletionSource];
+    [self callFunctionInBackground:function withParameters:parameters cachePolicy:cachePolicy block:^(id object, NSError *error) {
+        if(error)
+            [tcs setError:error];
+        else
+            [tcs setResult:object];
+    }];
+    return tcs.task;
+}
+
 
 + (void)callFunctionInBackground:(NSString*)function withParameters:(NSDictionary*)parameters cachePolicy:(PFCachePolicy)cachePolicy block:(PFIdResultBlock)block
 {
